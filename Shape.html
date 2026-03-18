@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Exact Sidebar</title>
+    <style>
+        :root {
+            --sidebar-color: #5865f2; /* Exact blue from the image */
+            --tab-width: 44px;        /* Width of the main tab */
+            --tab-height: 120px;      /* Height of the straight vertical edge */
+            --outer-radius: 14px;     /* The rounded curve on the right */
+            --flare-size: 18px;       /* The exact size of the sharp 'horns' */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            height: 2000px; /* So you can scroll and test */
+        }
+
+        /* 2. Make it sticky on the left */
+        .sidebar-container {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 9999;
+        }
+
+        /* 1. Build this exact shape */
+        .sidebar-body {
+            position: relative;
+            width: var(--tab-width);
+            height: var(--tab-height);
+            background-color: var(--sidebar-color);
+            /* Soft rounding on the outer (right) side only */
+            border-top-right-radius: var(--outer-radius);
+            border-bottom-right-radius: var(--outer-radius);
+        }
+
+        /* The 'Horns' (Inverse Curves) connecting to the wall */
+        .sidebar-body::before,
+        .sidebar-body::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            width: var(--flare-size);
+            height: var(--flare-size);
+        }
+
+        /* Top Horn - Flawless Concave Curve */
+        .sidebar-body::before {
+            bottom: 100%;
+            /* Cuts out a perfect circle from the top-right of the pseudo-element.
+               The -0.5px creates an ultra-smooth, anti-aliased edge.
+            */
+            background: radial-gradient(
+                circle at 100% 0%, 
+                transparent calc(var(--flare-size) - 0.5px), 
+                var(--sidebar-color) var(--flare-size)
+            );
+        }
+
+        /* Bottom Horn - Flawless Concave Curve */
+        .sidebar-body::after {
+            top: 100%;
+            background: radial-gradient(
+                circle at 100% 100%, 
+                transparent calc(var(--flare-size) - 0.5px), 
+                var(--sidebar-color) var(--flare-size)
+            );
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar-container">
+        <div class="sidebar-body"></div>
+    </div>
+
+</body>
